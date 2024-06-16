@@ -1,2 +1,2 @@
-# Server-Client-App
+# Server-Client-App (Java)
 WE NEED MORE
