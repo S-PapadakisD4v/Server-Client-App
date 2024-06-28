@@ -1,5 +1,7 @@
 package POJOs;
 
+import java.util.ArrayList;
+
 public class ServerConfigurations {
     private String ipAddress;
     private int portNumber;
@@ -65,5 +67,25 @@ public class ServerConfigurations {
         this.isMultithreaded = isMultithreaded;
     }
 
-    
+    public String toString(){
+        ArrayList<String> messages = new ArrayList<String>();
+        messages.add("Server Name\t>\t%s");
+        messages.add("Ip Address\t>\t%s");
+        messages.add("Port Number\t>\t%s");
+        messages.add("Password\t>\t%s");
+        messages.add("Multithreaded\t>\t%s");
+        messages.add("User Pool\t>\t%s");
+
+        String result = String.format(
+                String.join("\n", messages),
+                this.name,
+                this.ipAddress,
+                this.portNumber,
+                this.password,
+                this.isMultithreaded,
+                this.userPool
+                );
+
+        return result;
+    }
 }
