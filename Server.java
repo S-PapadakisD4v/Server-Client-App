@@ -4,9 +4,14 @@ import java.util.Scanner;
 import POJOs.ServerConfigurations;
 
 public class Server {
-    static ServerConfigurations config;
+    private static ServerConfigurations config;
+    private static final String CONFIG_FILE_NAME = "./configs/server.cfg";
     public static void main(String[] args){
-        config = new ServerConfigurations();
-        System.out.println(config.toString());
+        try{
+            config = new ServerConfigurations(CONFIG_FILE_NAME);
+            System.out.println(config.toString());
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
     }
 }

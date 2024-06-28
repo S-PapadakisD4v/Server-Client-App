@@ -1,22 +1,65 @@
 package POJOs;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
-public class ServerConfigurations {
-    private String ipAddress;
-    private int portNumber;
-    private String name;
-    private String password;
-    private int userPool;
-    private boolean isMultithreaded;
+public class ServerConfigurations extends Configuration{
+    private String ipAddress = "127.0.0.1";     //localhost;
+    private int portNumber = 8080;
+    private String name = "Randomix";
+    private String password = "";               //passwordless
+    private int userPool = 10;
+    private boolean isMultithreaded = true;     //multithreaded
 
     public ServerConfigurations(){
-        this.ipAddress = "127.0.0.1";        //localhost
-        this.portNumber = 8080;
-        this.name = "Randomix";
-        this.password = null;         //passwordless
-        this.userPool = 10;
-        this.isMultithreaded = true;    //multithreaded
+        super();
+    }
+
+    public ServerConfigurations(String fileName) throws SecurityException,
+                                                        FileNotFoundException,
+                                                        IllegalArgumentException,
+                                                        NullPointerException,
+                                                        IOException
+    {
+        super();
+        this.loadConfigs(fileName);
+    }
+
+    private void loadConfigs(String fileName) throws SecurityException,
+                                                    FileNotFoundException,
+                                                    IllegalArgumentException,
+                                                    NullPointerException,
+                                                    IOException
+    {
+        super.loadFile(fileName);
+        super.loadProperties();
+        this.getProps().forEach(( k, v )->{
+            String key = k.toString();
+            switch (key) {
+                case "ip.address":
+                    this.setIpAddress(v.toString());
+                    break;
+                case "port.number":
+                    this.setPortNumber((Integer.parseInt(v.toString())));
+                    break;
+                case "server.name":
+                    this.setName(v.toString());
+                    break;
+                case "password":
+                    this.setPassword(v.toString());
+                    break;
+                case "user.pool":
+                    this.setUserPool((Integer.parseInt(v.toString())));
+                    break;
+                case "is.multithreaded":
+                    this.setMultithreaded((Boolean.parseBoolean(v.toString())));
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     public String getIpAddress() {
