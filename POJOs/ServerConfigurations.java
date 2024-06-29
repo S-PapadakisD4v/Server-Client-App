@@ -3,18 +3,18 @@ package POJOs;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class ServerConfigurations extends Configuration{
-    private String ipAddress = "127.0.0.1";     //localhost;
-    private int portNumber = 8080;
-    private String name = "Randomix";
-    private String password = "";               //passwordless
-    private int userPool = 10;
-    private boolean isMultithreaded = true;     //multithreaded
+    private String ipAddress;
+    private int portNumber;
+    private String name;
+    private String password;
+    private int userPool;
+    private boolean isMultithreaded;
 
     public ServerConfigurations(){
         super();
+        this.loadDefaultValues();
     }
 
     public ServerConfigurations(String fileName) throws SecurityException,
@@ -27,34 +27,64 @@ public class ServerConfigurations extends Configuration{
         this.loadConfigs(fileName);
     }
 
+    private void loadDefaultValues(){
+        setIpAddress("127.0.0.1");    //localhost;
+        setPortNumber(8080);
+        setName("Randomix");
+        setPassword("");               //passwordless
+        setUserPool(10);
+        setMultithreaded(true); //multithreaded
+    }
+
     private void loadConfigs(String fileName) throws SecurityException,
                                                     FileNotFoundException,
                                                     IllegalArgumentException,
                                                     NullPointerException,
                                                     IOException
     {
+        this.loadDefaultValues();
         super.loadFile(fileName);
         super.loadProperties();
         this.getProps().forEach(( k, v )->{
-            String key = k.toString();
+            String key = k.toString().trim();
+            String propValue = v.toString().trim();
             switch (key) {
                 case "ip.address":
-                    this.setIpAddress(v.toString());
+                    if(!propValue.isEmpty() && propValue != null){
+                        this.setIpAddress(propValue);
+                    }
                     break;
                 case "port.number":
-                    this.setPortNumber((Integer.parseInt(v.toString())));
+                    if(!propValue.isEmpty() && propValue != null){
+                        try{
+                            this.setPortNumber((Integer.parseInt(propValue)));
+                        }catch(NumberFormatException ex){}
+                    }
                     break;
                 case "server.name":
-                    this.setName(v.toString());
+                    if(!propValue.isEmpty() && propValue != null){
+                        this.setName(propValue);
+                    }
                     break;
                 case "password":
-                    this.setPassword(v.toString());
+                    if(!propValue.isEmpty() && propValue != null){
+                        this.setPassword(propValue);
+                    }
                     break;
                 case "user.pool":
-                    this.setUserPool((Integer.parseInt(v.toString())));
-                    break;
-                case "is.multithreaded":
-                    this.setMultithreaded((Boolean.parseBoolean(v.toString())));
+                    if(!propValue.isEmpty() && propValue != null){
+                        try{
+                            int up = Integer.parseInt(propValue);
+                            if(up > 0){
+                                this.setUserPool(up);
+                            }
+                        }catch(NumberFormatException ex){}
+                        if(this.getUserPool() > 1){
+                            setMultithreaded(true);
+                        }else{
+                            setMultithreaded(false);
+                        }
+                    }
                     break;
                 default:
                     break;
