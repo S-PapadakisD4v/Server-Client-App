@@ -9,7 +9,7 @@ public class Server {
     public static void main(String[] args){
         try{
             config = new ServerConfigurations(CONFIG_FILE_NAME);
-            System.out.println(config.toString());
+            System.out.println(String.format("\nSERVER INFORMATIONS\n----------------------\n%s\n\n",config.toString()));
         }catch(Exception ex){
             System.out.println(ex.getMessage());
         }
