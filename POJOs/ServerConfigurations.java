@@ -28,12 +28,12 @@ public class ServerConfigurations extends Configuration{
     }
 
     private void loadDefaultValues(){
-        setIpAddress("127.0.0.1");    //localhost;
-        setPortNumber(8080);
-        setName("Randomix");
-        setPassword("");               //passwordless
-        setUserPool(10);
-        setMultithreaded(true); //multithreaded
+        this.setIpAddress("127.0.0.1");    //localhost;
+        this.setPortNumber(8080);
+        this.setName("Randomix");
+        this.setPassword("");               //passwordless
+        this.setUserPool(10);
+        this.setMultithreaded(true); //multithreaded
     }
 
     private void loadConfigs(String fileName) throws SecurityException,
@@ -80,9 +80,9 @@ public class ServerConfigurations extends Configuration{
                             }
                         }catch(NumberFormatException ex){}
                         if(this.getUserPool() > 1){
-                            setMultithreaded(true);
+                            this.setMultithreaded(true);
                         }else{
-                            setMultithreaded(false);
+                            this.setMultithreaded(false);
                         }
                     }
                     break;
